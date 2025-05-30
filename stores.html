@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>店舗一覧 - BENEX | お得MAX、クレーンゲーム</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "benex-purple": "#D100FF",
+              "benex-dark": "#0E0E0E",
+              "benex-light": "#F5F5F5",
+              "benex-deep-purple": "#4a006a",
+              "badge-hot-text": "#ff6060",
+              "badge-hot-bg": "rgba(255, 59, 48, 0.25)",
+              "badge-hot-border": "#ff3b30",
+              "badge-popular-text": "#ffee70",
+              "badge-popular-bg": "rgba(255, 204, 0, 0.25)",
+              "badge-popular-border": "#ffcc00",
+              "badge-easy-text": "#70ff90",
+              "badge-easy-bg": "rgba(52, 199, 89, 0.25)",
+              "badge-easy-border": "#34c759",
+              "badge-date1-text": "#70c0ff",
+              "badge-date1-bg": "rgba(59, 130, 246, 0.2)",
+              "badge-date1-border": "#3b82f6",
+              "badge-date2-text": "#c0a0ff",
+              "badge-date2-bg": "rgba(139, 92, 246, 0.2)",
+              "badge-date2-border": "#8b5cf6",
+            },
+            fontFamily: {
+              sans: ["Noto Sans JP", "sans-serif"],
+              display: ["IBM Plex Sans JP", "sans-serif"],
+              orbitron: ["Orbitron", "sans-serif"],
+            },
+            fontSize: {
+              "nav-link": "0.9rem",
+              "hero-h1-ref": "3.5rem",
+              "hero-p-ref": "1.5rem",
+              "btn-hero-ref": "1.1rem",
+              "usp-num-ref": "3.5rem",
+              "usp-label-ref": "1.1rem",
+              "board-title-ref": "2rem",
+              "card-title-ref": "1.3rem",
+              "highlight-h3-ref": "1.5rem",
+            },
+            boxShadow: {
+              "neon-brand":
+                "0 0 5px #fff, 0 0 10px #fff, 0 0 15px var(--tw-colors-benex-purple), 0 0 25px var(--tw-colors-benex-purple), 0 0 35px var(--tw-colors-benex-purple)",
+              "neon-light-purple":
+                "0 0 2px var(--tw-colors-benex-purple), 0 0 4px var(--tw-colors-benex-purple)",
+              "neon-card": "0 0 10px rgba(209, 0, 255, 0.3)",
+              "neon-card-hover":
+                "0 0 15px rgba(209, 0, 255, 0.5), 0 0 25px rgba(209, 0, 255, 0.3)",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;700&family=Noto+Sans+JP:wght@400;700;900&family=Orbitron:wght@700&display=swap");
+      :root {
+        --main-color: #d100ff;
+        --dark-bg: #0e0e0e;
+        --neon-glow: 0 0 5px var(--main-color), 0 0 10px var(--main-color),
+          0 0 15px var(--main-color), 0 0 20px var(--main-color);
+        --light-glow: 0 0 2px var(--main-color), 0 0 4px var(--main-color);
+      }
+      body {
+        background-color: var(--dark-bg);
+        color: white;
+        font-family: "Noto Sans JP", sans-serif;
+        line-height: 1.6;
+      }
+      .header-bg {
+        background-color: var(--dark-bg);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-bottom: 2px solid var(--main-color);
+      }
+      .logo-text-benex {
+        font-family: "IBM Plex Sans JP", sans-serif;
+        font-weight: 700;
+        color: white;
+        text-shadow: var(--neon-glow);
+      }
+      .tagline {
+        font-size: 0.9rem;
+        color: white;
+        margin-top: -5px;
+      }
+      .logo-area {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .text-neon-light-glow {
+        color: white;
+        text-shadow: var(--light-glow);
+      }
+      .main-nav a:hover {
+        background-color: rgba(209, 0, 255, 0.2);
+      }
+      .neon-card {
+        background-color: rgba(0, 0, 0, 0.7);
+        border: 1px solid rgba(209, 0, 255, 0.5);
+        box-shadow: var(--tw-config-theme-extend-boxShadow-neon-card);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+      .neon-card:hover {
+        box-shadow: var(--tw-config-theme-extend-boxShadow-neon-card-hover);
+        transform: translateY(-5px);
+      }
+      .neon-card::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(
+          to right,
+          transparent,
+          var(--main-color),
+          transparent
+        );
+        opacity: 0.7;
+      }
+      .item-badge {
+        font-size: 0.75rem;
+        padding: 0.2rem 0.6rem;
+        border-radius: 10px;
+        white-space: nowrap;
+        font-weight: bold;
+        border-width: 1px;
+        display: inline-block;
+        box-shadow: 0 0 3px currentColor, 0 0 5px currentColor;
+      }
+      .badge-hot {
+        background-color: var(--tw-colors-badge-hot-bg);
+        color: var(--tw-colors-badge-hot-text);
+        border-color: var(--tw-colors-badge-hot-border);
+      }
+      .badge-popular {
+        background-color: var(--tw-colors-badge-popular-bg);
+        color: var(--tw-colors-badge-popular-text);
+        border-color: var(--tw-colors-badge-popular-border);
+      }
+      .badge-easy {
+        background-color: var(--tw-colors-badge-easy-bg);
+        color: var(--tw-colors-badge-easy-text);
+        border-color: var(--tw-colors-badge-easy-border);
+      }
+      .footer-nav-section h4::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 40px;
+        height: 2px;
+        background: var(--main-color);
+      }
+      .main-nav.active {
+        display: block !important;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background-color: var(--dark-bg);
+        padding: 1rem;
+        border-bottom: 1px solid var(--main-color);
+      }
+      .main-nav.active ul {
+        flex-direction: column;
+      }
+      .main-nav.active li {
+        margin: 0.5rem 0;
+      }
+      #storeMap {
+        background-color: #333;
+        min-height: 300px;
+      }
+    </style>
+  </head>
+  <body class="bg-benex-dark text-benex-light">
+    <header class="sticky top-0 z-50 header-bg">
+      <div class="container mx-auto flex items-center justify-between p-4">
+        <div class="logo-area">
+          <a href="/" class="logo-text-benex text-[1.8rem]">BENEX</a>
+          <span class="text-[0.9rem] text-gray-300 -mt-1">お得MAX、BENEX</span>
+        </div>
+        <button class="md:hidden text-3xl text-white menu-toggle">
+          <i class="fas fa-bars"></i>
+        </button>
+        <nav class="main-nav hidden md:flex">
+          <ul class="flex gap-x-[0.5rem] lg:gap-x-[0.5rem]">
+            <li>
+              <a
+                href="/"
+                class="flex items-center text-nav-link px-[0.7rem] py-[0.5rem] rounded-[4px] text-white"
+                ><i class="fas fa-home w-4 mr-2 text-benex-purple"></i>Home</a
+              >
+            </li>
+            <li>
+              <a
+                href="/stores.html"
+                class="flex items-center text-nav-link px-[0.7rem] py-[0.5rem] rounded-[4px] text-benex-purple"
+                ><i class="fas fa-store w-4 mr-2"></i>Stores</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="flex items-center text-nav-link px-[0.7rem] py-[0.5rem] rounded-[4px] text-white"
+                ><i class="fas fa-gift w-4 mr-2 text-benex-purple"></i>Events &
+                Prizes</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="flex items-center text-nav-link px-[0.7rem] py-[0.5rem] rounded-[4px] text-white"
+                ><i class="fas fa-camera-retro w-4 mr-2 text-benex-purple"></i
+                >Fans Gallery</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="flex items-center text-nav-link px-[0.7rem] py-[0.5rem] rounded-[4px] text-white"
+                ><i class="fas fa-building w-4 mr-2 text-benex-purple"></i
+                >Company</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="flex items-center text-nav-link px-[0.7rem] py-[0.5rem] rounded-[4px] text-white"
+                ><i class="fas fa-briefcase w-4 mr-2 text-benex-purple"></i
+                >Careers</a
+              >
+            </li>
+            <li>
+              <a
+                href="#"
+                class="flex items-center text-nav-link px-[0.7rem] py-[0.5rem] rounded-[4px] text-white"
+                ><i class="fas fa-envelope w-4 mr-2 text-benex-purple"></i
+                >Contact</a
+              >
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main class="pt-16">
+      <section class="py-10 bg-benex-dark/50">
+        <div class="container mx-auto px-4 text-center">
+          <h1
+            class="font-display font-bold text-hero-h1-ref mb-6 text-neon-light-glow"
+          >
+            最寄り店舗を探す
+          </h1>
+          <div
+            class="max-w-xl mx-auto flex flex-col sm:flex-row gap-2 items-center"
+          >
+            <input
+              type="text"
+              id="searchBox"
+              class="w-full sm:flex-grow px-4 py-3 rounded-md bg-gray-800 border border-benex-purple/50 text-white placeholder-gray-500 focus:ring-2 focus:ring-benex-purple focus:border-transparent outline-none"
+              placeholder="駅名・住所・郵便番号などで検索"
+            />
+            <button
+              id="geoBtn"
+              class="w-full sm:w-auto mt-2 sm:mt-0 px-6 py-3 bg-benex-purple text-white font-bold rounded-md hover:opacity-80 transition"
+            >
+              <i class="fas fa-map-marker-alt mr-2"></i>現在地から探す
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="container mx-auto px-4 py-10">
+        <div class="flex flex-col md:flex-row gap-8">
+          <div
+            id="storeMap"
+            class="w-full md:w-2/5 h-96 md:h-[calc(100vh-250px)] md:sticky md:top-24 rounded-lg shadow-neon-card"
+          >
+            <div
+              class="w-full h-full bg-gray-700/50 flex items-center justify-center text-gray-400 rounded-lg"
+            >
+              <p>(ここにGoogle Mapが表示されます)</p>
+            </div>
+          </div>
+
+          <div id="storeList" class="w-full md:w-3/5 space-y-6">
+            <div
+              class="neon-card rounded-lg p-5 shadow-neon-card hover:shadow-neon-card-hover transition relative overflow-hidden"
+            >
+              <div class="flex flex-col sm:flex-row gap-4">
+                <img
+                  src="https://via.placeholder.com/200x150?text=BENEX川越"
+                  alt="BENEX川越店"
+                  class="w-full sm:w-1/3 h-auto sm:h-36 object-cover rounded-md"
+                />
+                <div class="sm:w-2/3">
+                  <h3
+                    class="text-card-title-ref font-bold text-white mb-1 text-neon-light-glow"
+                  >
+                    BENEX川越店
+                  </h3>
+                  <p class="text-sm text-gray-400 mb-2">
+                    <i class="fas fa-map-pin mr-1 text-benex-purple"></i
+                    >埼玉県川越市大仙波340-1
+                  </p>
+                  <div class="mb-3 flex flex-wrap gap-2">
+                    <span class="item-badge badge-easy">営業中</span>
+                    <span class="item-badge badge-popular">駅から10分</span>
+                  </div>
+                  <div class="flex flex-wrap gap-2 text-xs mb-3">
+                    <span class="bg-white/10 p-2 rounded-md flex items-center"
+                      ><i class="fas fa-gamepad mr-2 text-benex-purple"></i>
+                      419台</span
+                    >
+                    <span class="bg-white/10 p-2 rounded-md flex items-center"
+                      ><i class="fas fa-parking mr-2 text-benex-purple"></i>
+                      駐車場133台</span
+                    >
+                    <span class="bg-white/10 p-2 rounded-md flex items-center"
+                      ><i class="fas fa-clock mr-2 text-benex-purple"></i>
+                      24時まで</span
+                    >
+                  </div>
+                  <div class="flex flex-wrap gap-2">
+                    <a
+                      href="#"
+                      class="text-sm px-4 py-2 rounded-md bg-benex-purple text-white hover:opacity-80 transition font-semibold"
+                      >詳細を見る</a
+                    >
+                    <a
+                      href="#"
+                      class="text-sm px-4 py-2 rounded-md border border-benex-purple text-benex-purple hover:bg-benex-purple/20 transition font-semibold"
+                      >採用情報</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="neon-card rounded-lg p-5 shadow-neon-card hover:shadow-neon-card-hover transition relative overflow-hidden"
+            >
+              <div class="flex flex-col sm:flex-row gap-4">
+                <img
+                  src="https://via.placeholder.com/200x150?text=BENEX浦和"
+                  alt="BENEX浦和店"
+                  class="w-full sm:w-1/3 h-auto sm:h-36 object-cover rounded-md"
+                />
+                <div class="sm:w-2/3">
+                  <h3
+                    class="text-card-title-ref font-bold text-white mb-1 text-neon-light-glow"
+                  >
+                    BENEX浦和店
+                  </h3>
+                  <p class="text-sm text-gray-400 mb-2">
+                    <i class="fas fa-map-pin mr-1 text-benex-purple"></i
+                    >埼玉県さいたま市南区辻7-2-8
+                  </p>
+                  <div class="mb-3 flex flex-wrap gap-2">
+                    <span class="item-badge badge-easy">営業中</span>
+                    <span class="item-badge badge-popular">駅から10分</span>
+                  </div>
+                  <div class="flex flex-wrap gap-2 text-xs mb-3">
+                    <span class="bg-white/10 p-2 rounded-md flex items-center"
+                      ><i class="fas fa-gamepad mr-2 text-benex-purple"></i>
+                      185台</span
+                    >
+                    <span class="bg-white/10 p-2 rounded-md flex items-center"
+                      ><i class="fas fa-parking mr-2 text-benex-purple"></i>
+                      駐車場53台</span
+                    >
+                    <span class="bg-white/10 p-2 rounded-md flex items-center"
+                      ><i class="fas fa-clock mr-2 text-benex-purple"></i>
+                      24時まで</span
+                    >
+                  </div>
+                  <div class="flex flex-wrap gap-2">
+                    <a
+                      href="#"
+                      class="text-sm px-4 py-2 rounded-md bg-benex-purple text-white hover:opacity-80 transition font-semibold"
+                      >詳細を見る</a
+                    >
+                    <a
+                      href="#"
+                      class="text-sm px-4 py-2 rounded-md border border-benex-purple text-benex-purple hover:bg-benex-purple/20 transition font-semibold"
+                      >採用情報</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="neon-card rounded-lg p-5 shadow-neon-card hover:shadow-neon-card-hover transition relative overflow-hidden"
+            >
+              <div class="flex flex-col sm:flex-row gap-4">
+                <img
+                  src="https://via.placeholder.com/200x150?text=BENEX川崎"
+                  alt="BENEX川崎店"
+                  class="w-full sm:w-1/3 h-auto sm:h-36 object-cover rounded-md"
+                />
+                <div class="sm:w-2/3">
+                  <h3
+                    class="text-card-title-ref font-bold text-white mb-1 text-neon-light-glow"
+                  >
+                    BENEX川崎店
+                  </h3>
+                  <p class="text-sm text-gray-400 mb-2">
+                    <i class="fas fa-map-pin mr-1 text-benex-purple"></i
+                    >神奈川県川崎市川崎区鋼管通4-8-3
+                  </p>
+                  <div class="mb-3 flex flex-wrap gap-2">
+                    <span class="item-badge badge-easy">営業中</span>
+                    <span class="item-badge badge-popular">駅から15分</span>
+                  </div>
+                  <div class="flex flex-wrap gap-2 text-xs mb-3">
+                    <span class="bg-white/10 p-2 rounded-md flex items-center"
+                      ><i class="fas fa-gamepad mr-2 text-benex-purple"></i>
+                      343台</span
+                    >
+                    <span class="bg-white/10 p-2 rounded-md flex items-center"
+                      ><i class="fas fa-parking mr-2 text-benex-purple"></i>
+                      駐車場130台</span
+                    >
+                    <span class="bg-white/10 p-2 rounded-md flex items-center"
+                      ><i class="fas fa-clock mr-2 text-benex-purple"></i>
+                      24時まで</span
+                    >
+                  </div>
+                  <div class="flex flex-wrap gap-2">
+                    <a
+                      href="#"
+                      class="text-sm px-4 py-2 rounded-md bg-benex-purple text-white hover:opacity-80 transition font-semibold"
+                      >詳細を見る</a
+                    >
+                    <a
+                      href="#"
+                      class="text-sm px-4 py-2 rounded-md border border-benex-purple text-benex-purple hover:bg-benex-purple/20 transition font-semibold"
+                      >採用情報</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="neon-card rounded-lg p-5 shadow-neon-card hover:shadow-neon-card-hover transition relative overflow-hidden"
+            >
+              <div class="flex flex-col sm:flex-row gap-4">
+                <img
+                  src="https://via.placeholder.com/200x150?text=BENEX大和"
+                  alt="BENEX大和店"
+                  class="w-full sm:w-1/3 h-auto sm:h-36 object-cover rounded-md"
+                />
+                <div class="sm:w-2/3">
+                  <h3
+                    class="text-card-title-ref font-bold text-white mb-1 text-neon-light-glow"
+                  >
+                    BENEX大和店
+                  </h3>
+                  <p class="text-sm text-gray-400 mb-2">
+                    <i class="fas fa-map-pin mr-1 text-benex-purple"></i
+                    >神奈川県大和市下鶴間2752-2
+                  </p>
+                  <div class="mb-3 flex flex-wrap gap-2">
+                    <span class="item-badge badge-easy">営業中</span>
+                    <span class="item-badge badge-popular">駅から15分</span>
+                  </div>
+                  <div class="flex flex-wrap gap-2 text-xs mb-3">
+                    <span class="bg-white/10 p-2 rounded-md flex items-center"
+                      ><i class="fas fa-gamepad mr-2 text-benex-purple"></i>
+                      354台</span
+                    >
+                    <span class="bg-white/10 p-2 rounded-md flex items-center"
+                      ><i class="fas fa-parking mr-2 text-benex-purple"></i>
+                      駐車場119台</span
+                    >
+                    <span class="bg-white/10 p-2 rounded-md flex items-center"
+                      ><i class="fas fa-clock mr-2 text-benex-purple"></i>
+                      24時まで</span
+                    >
+                  </div>
+                  <div class="flex flex-wrap gap-2">
+                    <a
+                      href="#"
+                      class="text-sm px-4 py-2 rounded-md bg-benex-purple text-white hover:opacity-80 transition font-semibold"
+                      >詳細を見る</a
+                    >
+                    <a
+                      href="#"
+                      class="text-sm px-4 py-2 rounded-md border border-benex-purple text-benex-purple hover:bg-benex-purple/20 transition font-semibold"
+                      >採用情報</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="neon-card rounded-lg p-5 shadow-neon-card hover:shadow-neon-card-hover transition relative overflow-hidden"
+            >
+              <div class="flex flex-col sm:flex-row gap-4">
+                <img
+                  src="https://via.placeholder.com/200x150?text=BENEX平塚"
+                  alt="BENEX平塚店"
+                  class="w-full sm:w-1/3 h-auto sm:h-36 object-cover rounded-md"
+                />
+                <div class="sm:w-2/3">
+                  <h3
+                    class="text-card-title-ref font-bold text-white mb-1 text-neon-light-glow"
+                  >
+                    BENEX平塚店
+                  </h3>
+                  <p class="text-sm text-gray-400 mb-2">
+                    <i class="fas fa-map-pin mr-1 text-benex-purple"></i
+                    >神奈川県平塚市四之宮6-10-27
+                  </p>
+                  <div class="mb-3 flex flex-wrap gap-2">
+                    <span class="item-badge badge-easy">営業中</span>
+                    <span class="item-badge badge-popular">駅から20分</span>
+                  </div>
+                  <div class="flex flex-wrap gap-2 text-xs mb-3">
+                    <span class="bg-white/10 p-2 rounded-md flex items-center"
+                      ><i class="fas fa-gamepad mr-2 text-benex-purple"></i>
+                      281台</span
+                    >
+                    <span class="bg-white/10 p-2 rounded-md flex items-center"
+                      ><i class="fas fa-parking mr-2 text-benex-purple"></i>
+                      駐車場99台</span
+                    >
+                    <span class="bg-white/10 p-2 rounded-md flex items-center"
+                      ><i class="fas fa-clock mr-2 text-benex-purple"></i>
+                      24時まで</span
+                    >
+                  </div>
+                  <div class="flex flex-wrap gap-2">
+                    <a
+                      href="#"
+                      class="text-sm px-4 py-2 rounded-md bg-benex-purple text-white hover:opacity-80 transition font-semibold"
+                      >詳細を見る</a
+                    >
+                    <a
+                      href="#"
+                      class="text-sm px-4 py-2 rounded-md border border-benex-purple text-benex-purple hover:bg-benex-purple/20 transition font-semibold"
+                      >採用情報</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="bg-black mt-16 pt-12 pb-8">
+      <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+          <div class="md:col-span-1">
+            <span class="logo-text-benex text-[2rem]">BENEX</span>
+            <div class="tagline">お得MAX、BENEX</div>
+            <p class="mt-6 text-sm text-gray-300">
+              株式会社ティスコ<br />〒343-0845<br />埼玉県越谷市南越谷1-17-2<br />朝日生命越谷ビル6階
+            </p>
+          </div>
+          <div
+            class="md:col-span-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8"
+          >
+            <div class="footer-nav-section">
+              <h4 class="text-[1.1rem] font-bold mb-4 pb-2 relative text-white">
+                BENEXについて
+              </h4>
+              <ul class="space-y-3">
+                <li class="text-gray-300 hover:text-benex-purple transition">
+                  <a href="#">会社情報</a>
+                </li>
+                <li class="text-gray-300 hover:text-benex-purple transition">
+                  <a href="#">ミッション</a>
+                </li>
+                <li class="text-gray-300 hover:text-benex-purple transition">
+                  <a href="#">沿革</a>
+                </li>
+                <li class="text-gray-300 hover:text-benex-purple transition">
+                  <a href="#">採用情報</a>
+                </li>
+              </ul>
+            </div>
+            <div class="footer-nav-section">
+              <h4 class="text-[1.1rem] font-bold mb-4 pb-2 relative text-white">
+                店舗案内
+              </h4>
+              <ul class="space-y-3">
+                <li class="text-gray-300 hover:text-benex-purple transition">
+                  <a href="/crane-game-kawagoe/">BENEX川越店</a>
+                </li>
+                <li class="text-gray-300 hover:text-benex-purple transition">
+                  <a href="/crane-game-urawa/">BENEX浦和店</a>
+                </li>
+                <li class="text-gray-300 hover:text-benex-purple transition">
+                  <a href="/crane-game-kawasaki/">BENEX川崎店</a>
+                </li>
+                <li class="text-gray-300 hover:text-benex-purple transition">
+                  <a href="/crane-game-yamato/">BENEX大和店</a>
+                </li>
+                <li class="text-gray-300 hover:text-benex-purple transition">
+                  <a href="/crane-game-hiratsuka/">BENEX平塚店</a>
+                </li>
+              </ul>
+            </div>
+            <div class="footer-nav-section">
+              <h4 class="text-[1.1rem] font-bold mb-4 pb-2 relative text-white">
+                サービス &amp; その他
+              </h4>
+              <ul class="space-y-3">
+                <li class="text-gray-300 hover:text-benex-purple transition">
+                  <a href="/events-and-prizes/">イベント・景品</a>
+                </li>
+                <li class="text-gray-300 hover:text-benex-purple transition">
+                  <a href="/fans-gallery/">ファンギャラリー</a>
+                </li>
+                <li class="text-gray-300 hover:text-benex-purple transition">
+                  <a href="/contact/">お問い合わせ</a>
+                </li>
+                <li class="text-gray-300 hover:text-benex-purple transition">
+                  <a href="/contact/#faq">よくある質問</a>
+                </li>
+                <li
+                  class="text-gray-300 hover:text-benex-purple transition pt-2 border-t border-gray-700/50 mt-2"
+                >
+                  <a href="#">プライバシーポリシー</a>
+                </li>
+                <li class="text-gray-300 hover:text-benex-purple transition">
+                  <a href="#">サイトマップ</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div
+          class="border-t border-gray-800 pt-8 text-center text-gray-500 text-[0.9rem]"
+        >
+          &copy; 2025 TISCO Co., Ltd. All Rights Reserved.
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const menuToggle = document.querySelector(".menu-toggle");
+        const mainNav = document.querySelector(".main-nav");
+        if (menuToggle && mainNav) {
+          menuToggle.addEventListener("click", function () {
+            mainNav.classList.toggle("active");
+            const icon = menuToggle.querySelector("i");
+            if (mainNav.classList.contains("active")) {
+              icon.classList.remove("fa-bars");
+              icon.classList.add("fa-times");
+            } else {
+              icon.classList.remove("fa-times");
+              icon.classList.add("fa-bars");
+            }
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
