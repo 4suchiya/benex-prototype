@@ -59,6 +59,11 @@
     <style>
       @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;700&family=Noto+Sans+JP:wght@400;700;900&family=Orbitron:wght@700&display=swap");
 
+      /* ▼ ロゴデザイン用のCSS変数と新しいクラス */
+      :root {
+        --neon-glow: 0 0 5px #d100ff, 0 0 10px #d100ff, 0 0 15px #d100ff,
+          0 0 20px #d100ff;
+      }
       body {
         background-color: var(--tw-colors-benex-dark);
         color: var(--tw-colors-benex-light);
@@ -71,25 +76,96 @@
         -webkit-backdrop-filter: blur(10px);
         border-bottom: 2px solid var(--tw-colors-benex-purple);
       }
-
-      /* --- ▼▼▼ ネオン効果とバッジデザインの修正 ▼▼▼ --- */
+      /* ▼ ロゴのネオン効果をCSS変数で統一 */
       .logo-text-benex {
         font-family: "IBM Plex Sans JP", sans-serif;
         font-weight: 700;
         color: white;
-        /* 参考コードの --glow-shadow に近い表現 */
-        text-shadow: 0 0 5px var(--tw-colors-benex-purple),
-          0 0 10px var(--tw-colors-benex-purple),
-          0 0 15px var(--tw-colors-benex-purple);
+        text-shadow: var(--neon-glow); /* CSS変数を使用 */
       }
+      /* ▼ タグラインのスタイル追加 */
+      .tagline {
+        font-size: 0.9rem;
+        color: white;
+        margin-top: -5px;
+      }
+      /* ▼ ロゴエリアのflex-directionをcolumnに設定 */
+      .logo-area {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      /* ▲ 追加・変更されたCSSここまで */
+
+      /* ▼▼▼ ヒーローセクション修正開始 ▼▼▼ */
+      .hero-ref {
+        padding: 5rem 0 3rem;
+        position: relative;
+        overflow: hidden;
+        text-align: center;
+        /* 参考デザインの背景画像とグラデーションオーバーレイを適用 */
+        background: linear-gradient(
+            45deg,
+            rgba(14, 14, 14, 0.9),
+            rgba(209, 0, 255, 0.2)
+          ),
+          url("https://images.unsplash.com/photo-1601850494422-3cf14624b0b3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80")
+            center/cover;
+      }
+
+      /* 既存の放射状グラデーション擬似要素を無効化 */
+      .hero-ref::after {
+        content: none;
+      }
+
+      /* ネオン効果をCSS変数で統一 */
       .hero-h1-neon {
         color: white;
-        /* 参考コードの --glow-shadow に近い表現 */
-        text-shadow: 0 0 5px var(--tw-colors-benex-purple),
-          0 0 10px var(--tw-colors-benex-purple),
-          0 0 15px var(--tw-colors-benex-purple),
-          0 0 20px var(--tw-colors-benex-purple);
+        text-shadow: var(--neon-glow);
       }
+
+      /* ボタングループのレイアウト調整 */
+      .btn-group {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+
+      /* ボタンスタイルの調整 */
+      .btn-hero {
+        display: inline-block;
+        padding: 0.8rem 2rem;
+        margin: 0 0.5rem 1rem;
+        border-radius: 50px;
+        font-weight: bold;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-size: 1.1rem;
+      }
+
+      /* ボタンのホバー効果を参考デザインに合わせる */
+      .btn-hero-primary-ref:hover {
+        background-color: #a800cc;
+        transform: translateY(-2px);
+      }
+
+      .btn-hero-secondary-ref:hover {
+        background-color: rgba(255, 255, 255, 0.3);
+        transform: translateY(-2px);
+      }
+
+      /* レスポンシブ対応の強化 */
+      @media (max-width: 768px) {
+        .hero-h1-neon {
+          font-size: 2rem; /* text-hero-h1-ref の 3.5rem から 2rem に縮小 */
+        }
+        .hero-ref p {
+          font-size: 1.2rem; /* text-hero-p-ref の 1.5rem から 1.2rem に縮小 */
+        }
+      }
+      /* ▲▲▲ ヒーローセクション修正終了 ▲▲▲ */
+
       .text-neon-light-glow {
         color: white;
         /* 参考コードの --light-glow に近い表現 */
@@ -152,50 +228,18 @@
         text-shadow: 0 0 3px var(--tw-colors-badge-date2-text),
           0 0 5px var(--tw-colors-badge-date2-text);
       }
-      /* --- ▲▲▲ ネオン効果とバッジデザインの修正 ▲▲▲ --- */
-
       .main-nav a:hover {
         background-color: rgba(209, 0, 255, 0.2);
       }
-      .hero-ref {
-        padding: 5rem 0 3rem;
-        position: relative;
-        overflow: hidden;
-        text-align: center;
-      }
-      .hero-ref::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: radial-gradient(
-          circle at center,
-          rgba(209, 0, 255, 0.3) 0%,
-          transparent 70%
-        );
-        pointer-events: none;
-        z-index: 0;
-      }
+
       .hero-ref > div {
         position: relative;
         z-index: 1;
       }
-      .btn-hero {
-        display: inline-block;
-        padding: 0.8rem 2rem;
-        margin: 0 0.5rem 1rem;
-        border-radius: 50px;
-        font-weight: bold;
-        text-decoration: none;
-        transition: all 0.3s ease;
-        font-size: 1.1rem;
-      }
+      /* btn-hero-primary-refとbtn-hero-secondary-refのbox-shadowは既存のまま */
       .btn-hero-primary-ref {
         background-color: var(--tw-colors-benex-purple);
         color: white;
-        /* 参考コードに準拠したネオンシャドウ */
         box-shadow: 0 0 5px var(--tw-colors-benex-purple),
           0 0 10px var(--tw-colors-benex-purple),
           0 0 15px var(--tw-colors-benex-purple);
@@ -205,14 +249,7 @@
         color: white;
         border: 1px solid white;
       }
-      .btn-hero:hover {
-        transform: translateY(-3px);
-      }
-      .btn-hero-primary-ref:hover {
-        box-shadow: 0 0 8px var(--tw-colors-benex-purple),
-          0 0 15px var(--tw-colors-benex-purple),
-          0 0 20px var(--tw-colors-benex-purple);
-      }
+      /* btn-hero:hover は上で定義した hover 効果に上書きされるため不要 */
 
       .board-title h2 .fas {
         color: #d100ff;
@@ -223,13 +260,29 @@
         height: 2px;
         background: linear-gradient(to right, #d100ff, transparent);
       }
-      .scroll-container::-webkit-scrollbar {
+
+      /* スマホで店舗・イベントを縦並びにするための調整 */
+      .scroll-container-md-only::-webkit-scrollbar {
         display: none;
       }
-      .scroll-container {
+      .scroll-container-md-only {
         -ms-overflow-style: none;
         scrollbar-width: none;
       }
+      @media (max-width: 767px) {
+        .scroll-container-md-only {
+          overflow-x: hidden !important;
+          display: grid !important;
+          grid-template-columns: 1fr !important;
+          gap: 1.5rem !important;
+          padding-bottom: 0 !important;
+        }
+        .scroll-container-md-only > * {
+          width: 100% !important;
+          min-width: 0 !important;
+        }
+      }
+
       .neon-card {
         background-color: rgba(0, 0, 0, 0.7);
         border: 1px solid rgba(209, 0, 255, 0.5);
@@ -369,10 +422,12 @@
   <body class="bg-benex-dark text-benex-light">
     <header class="sticky top-0 z-50 header-bg">
       <div class="container mx-auto flex items-center justify-between p-4">
+        <!-- ▼ ヘッダーロゴ部分移植（参考デザイン準拠） -->
         <div class="logo-area">
           <a href="/" class="logo-text-benex text-[1.8rem]">BENEX</a>
-          <span class="text-[0.9rem] text-gray-300 -mt-1">お得MAX、BENEX</span>
+          <div class="tagline">お得MAX、BENEX</div>
         </div>
+        <!-- ▲ ヘッダーロゴ部分移植ここまで -->
         <button class="md:hidden text-3xl text-white menu-toggle">
           <i class="fas fa-bars"></i>
         </button>
@@ -438,7 +493,8 @@
       </div>
     </header>
 
-    <section class="hero-ref bg-benex-dark">
+    <!-- ▼ 修正したヒーローセクション -->
+    <section class="hero-ref">
       <div class="container mx-auto px-4">
         <h1 class="font-display font-bold text-hero-h1-ref mb-4 hero-h1-neon">
           お得MAX、BENEX
@@ -456,7 +512,9 @@
         </div>
       </div>
     </section>
+    <!-- ▲ 修正したヒーローセクションここまで -->
 
+    <!-- ▼ USPセクション（修正済み） -->
     <section class="py-16">
       <div class="container mx-auto px-4">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -486,20 +544,26 @@
             <div
               class="font-display font-bold text-benex-purple text-usp-num-ref leading-none"
             >
-              MAX
+              高還元率
             </div>
-            <div class="mt-2 text-usp-label-ref">還元率 日本最大級</div>
+            <div class="mt-2 text-usp-label-ref">業界最高水準</div>
           </div>
           <div
             class="neon-card rounded-lg p-6 text-center shadow-neon-card hover:shadow-neon-card-hover transition flex flex-col justify-center items-center min-h-[180px]"
           >
-            <div><i class="fas fa-parking text-6xl text-benex-purple"></i></div>
-            <div class="mt-2 text-usp-label-ref">広々駐車場完備</div>
+            <div
+              class="font-display font-bold text-benex-purple text-usp-num-ref leading-none"
+            >
+              駐車無料
+            </div>
+            <div class="mt-2 text-usp-label-ref">駐車場50台＋</div>
           </div>
         </div>
       </div>
     </section>
+    <!-- ▲ USPセクションここまで -->
 
+    <!-- ▼ 店舗情報（スマホ時は縦並び） -->
     <section class="py-16">
       <div class="container mx-auto px-4">
         <div class="board-title mb-8 flex items-center">
@@ -510,9 +574,11 @@
           </h2>
           <div class="line ml-4"></div>
         </div>
-        <div class="flex overflow-x-auto space-x-6 pb-4 scroll-container">
+        <div
+          class="grid grid-cols-1 gap-6 md:flex md:overflow-x-auto md:space-x-6 md:pb-4 scroll-container-md-only"
+        >
           <div
-            class="neon-card flex-shrink-0 w-72 rounded-lg p-5 shadow-neon-card hover:shadow-neon-card-hover transition relative overflow-hidden"
+            class="neon-card w-full md:flex-shrink-0 md:w-72 rounded-lg p-5 shadow-neon-card hover:shadow-neon-card-hover transition relative overflow-hidden"
           >
             <h3
               class="text-card-title-ref font-bold text-white mb-1 text-neon-light-glow"
@@ -541,7 +607,7 @@
             >
           </div>
           <div
-            class="neon-card flex-shrink-0 w-72 rounded-lg p-5 shadow-neon-card hover:shadow-neon-card-hover transition relative overflow-hidden"
+            class="neon-card w-full md:flex-shrink-0 md:w-72 rounded-lg p-5 shadow-neon-card hover:shadow-neon-card-hover transition relative overflow-hidden"
           >
             <h3
               class="text-card-title-ref font-bold text-white mb-1 text-neon-light-glow"
@@ -571,7 +637,7 @@
             >
           </div>
           <div
-            class="neon-card flex-shrink-0 w-72 rounded-lg p-5 shadow-neon-card hover:shadow-neon-card-hover transition relative overflow-hidden"
+            class="neon-card w-full md:flex-shrink-0 md:w-72 rounded-lg p-5 shadow-neon-card hover:shadow-neon-card-hover transition relative overflow-hidden"
           >
             <h3
               class="text-card-title-ref font-bold text-white mb-1 text-neon-light-glow"
@@ -601,7 +667,7 @@
             >
           </div>
           <div
-            class="neon-card flex-shrink-0 w-72 rounded-lg p-5 shadow-neon-card hover:shadow-neon-card-hover transition relative overflow-hidden"
+            class="neon-card w-full md:flex-shrink-0 md:w-72 rounded-lg p-5 shadow-neon-card hover:shadow-neon-card-hover transition relative overflow-hidden"
           >
             <h3
               class="text-card-title-ref font-bold text-white mb-1 text-neon-light-glow"
@@ -629,7 +695,7 @@
             >
           </div>
           <div
-            class="neon-card flex-shrink-0 w-72 rounded-lg p-5 shadow-neon-card hover:shadow-neon-card-hover transition relative overflow-hidden"
+            class="neon-card w-full md:flex-shrink-0 md:w-72 rounded-lg p-5 shadow-neon-card hover:shadow-neon-card-hover transition relative overflow-hidden"
           >
             <h3
               class="text-card-title-ref font-bold text-white mb-1 text-neon-light-glow"
@@ -661,7 +727,9 @@
         </div>
       </div>
     </section>
+    <!-- ▲ 店舗情報ここまで -->
 
+    <!-- ▼ イベント情報（スマホ時は縦並び） -->
     <section class="py-16">
       <div class="container mx-auto px-4">
         <div class="board-title mb-8 flex items-center">
@@ -672,9 +740,11 @@
           </h2>
           <div class="line ml-4"></div>
         </div>
-        <div class="flex overflow-x-auto space-x-6 pb-4 scroll-container">
+        <div
+          class="grid grid-cols-1 gap-6 md:flex md:overflow-x-auto md:space-x-6 md:pb-4 scroll-container-md-only"
+        >
           <div
-            class="neon-card flex-shrink-0 w-72 rounded-lg p-5 shadow-neon-card hover:shadow-neon-card-hover transition relative overflow-hidden"
+            class="neon-card w-full md:flex-shrink-0 md:w-72 rounded-lg p-5 shadow-neon-card hover:shadow-neon-card-hover transition relative overflow-hidden"
           >
             <h3
               class="text-card-title-ref font-bold text-white mb-1 text-neon-light-glow"
@@ -696,7 +766,7 @@
             >
           </div>
           <div
-            class="neon-card flex-shrink-0 w-72 rounded-lg p-5 shadow-neon-card hover:shadow-neon-card-hover transition relative overflow-hidden"
+            class="neon-card w-full md:flex-shrink-0 md:w-72 rounded-lg p-5 shadow-neon-card hover:shadow-neon-card-hover transition relative overflow-hidden"
           >
             <h3
               class="text-card-title-ref font-bold text-white mb-1 text-neon-light-glow"
@@ -718,7 +788,7 @@
             >
           </div>
           <div
-            class="neon-card flex-shrink-0 w-72 rounded-lg p-5 shadow-neon-card hover:shadow-neon-card-hover transition relative overflow-hidden"
+            class="neon-card w-full md:flex-shrink-0 md:w-72 rounded-lg p-5 shadow-neon-card hover:shadow-neon-card-hover transition relative overflow-hidden"
           >
             <h3
               class="text-card-title-ref font-bold text-white mb-1 text-neon-light-glow"
@@ -740,6 +810,7 @@
         </div>
       </div>
     </section>
+    <!-- ▲ イベント情報ここまで -->
 
     <section class="py-16 bg-black/30">
       <div class="container mx-auto px-4">
@@ -960,17 +1031,22 @@
       </div>
     </section>
 
+    <!-- ▼ フッター（構成変更済み） -->
     <footer class="bg-black mt-16 pt-12 pb-8">
       <div class="container mx-auto px-4">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
           <div class="md:col-span-1">
+            <!-- ▼ フッターロゴ部分移植（参考デザイン準拠） -->
             <span class="logo-text-benex text-[2rem]">BENEX</span>
-            <p class="text-[0.9rem] text-gray-400 -mt-1">お得MAX、BENEX</p>
+            <div class="tagline">お得MAX、BENEX</div>
+            <!-- ▲ フッターロゴ部分移植ここまで -->
             <p class="mt-6 text-sm text-gray-300">
               株式会社ティスコ<br />〒343-0845<br />埼玉県越谷市南越谷1-17-2<br />朝日生命越谷ビル6階
             </p>
           </div>
-          <div class="md:col-span-3 grid grid-cols-2 sm:grid-cols-3 gap-8">
+          <div
+            class="md:col-span-3 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-8"
+          >
             <div class="footer-nav-section">
               <h4 class="text-[1.1rem] font-bold mb-4 pb-2 relative text-white">
                 BENEXについて
@@ -995,12 +1071,8 @@
                 店舗案内
               </h4>
               <ul class="space-y-3">
+                <!-- 「店舗一覧」リンク削除済み -->
                 <li class="text-gray-300 hover:text-benex-purple transition">
-                  <a href="/stores/">店舗一覧</a>
-                </li>
-                <li
-                  class="text-gray-300 hover:text-benex-purple transition pt-2"
-                >
                   <a href="/crane-game-kawagoe/">BENEX川越店</a>
                 </li>
                 <li class="text-gray-300 hover:text-benex-purple transition">
@@ -1036,6 +1108,20 @@
                 </li>
               </ul>
             </div>
+            <!-- 新設: その他カテゴリ -->
+            <div class="footer-nav-section">
+              <h4 class="text-[1.1rem] font-bold mb-4 pb-2 relative text-white">
+                その他
+              </h4>
+              <ul class="space-y-3">
+                <li class="text-gray-300 hover:text-benex-purple transition">
+                  <a href="/privacy-policy/">プライバシーポリシー</a>
+                </li>
+                <li class="text-gray-300 hover:text-benex-purple transition">
+                  <a href="/sitemap/">サイトマップ</a>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
         <div
@@ -1045,6 +1131,7 @@
         </div>
       </div>
     </footer>
+    <!-- ▲ フッターここまで -->
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
